@@ -39,7 +39,7 @@ export async function POST(request: Request){
         }
 
         await db.collection('interviews').add(interview);
-        return Response.json({succss:true})
+        return Response.json({succss:true} , {status: 200});
     }
     catch(error){
         console.error(error)
