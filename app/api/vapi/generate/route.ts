@@ -32,7 +32,7 @@ export async function POST(request: Request){
             role , type , level ,
             techstack : techstack.split(','),
             questions: JSON.parse(questions) ,
-            usereId : userid ,
+            userId : userid ,
             finalized : true ,
             coverImage : 'covers/facebook.png',
             createdAt: new Date().toISOString()
