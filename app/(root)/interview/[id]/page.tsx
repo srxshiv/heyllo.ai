@@ -1,8 +1,6 @@
-import { useParams } from "next/navigation";
 
-
-const Page = async () => {
-    const { id } = useParams<{ id: string }>();
+const Page = async ({params} : {params : {id:string}}) => {
+    const { id } = params.id
 
     return (
         <>
