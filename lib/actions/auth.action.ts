@@ -51,7 +51,7 @@ export async function setSessionCookie(idToken: string) {
     expiresIn: ONE_WEEK * 1000,
   });
 
-  cookieStore.set("session", sessionCookie, {
+  cookieStore.set("heyllo-session", sessionCookie, {
     maxAge: ONE_WEEK,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -91,7 +91,7 @@ export async function signIn(params: SignInParams) {
 export async function getCurrentUser(): Promise<User | null> {
   const cookieStore = await cookies();
 
-  const sessionCookie = cookieStore.get("session")?.value;
+  const sessionCookie = cookieStore.get("heyllo-session")?.value;
   if (!sessionCookie) {
     return null;
   }
@@ -121,4 +121,9 @@ export async function isAuthenticated() {
   const user = await getCurrentUser();
 
   return !!user;
+}
+
+export async function signOut() {
+  const cookieStore = await cookies();
+  cookieStore.delete("heyllo-session");
 }
