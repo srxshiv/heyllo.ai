@@ -39,9 +39,9 @@ const Page = async () => {
             </span> with AI-powered mock interviews
           </h2>
           <p className="text-lg text-gray-600/90">
-            Practice job interviews with AI. Get instant feedback and improve
-            your interview skills. Join our community of job seekers and land
-            your dream job.
+          Nail your next job interview without leaving your couch.
+          Practice with our smart AI, get real-time feedback, and turn sweaty palms into smooth talk.
+          Join a community of go-getters who laugh in the face of awkward interview silences. 
           </p>
           <Button asChild className="max-sm:w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all w-fit">
             <Link href="/interview">Start an Interview</Link>
