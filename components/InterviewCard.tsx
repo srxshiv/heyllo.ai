@@ -14,55 +14,85 @@ const InterviewCard = async ({
   createdAt,
 }: InterviewCardProps) => {
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
-  const feedback = userId && id ? await getFeedbackByInterviewId({interviewId : id , userId}) : null ;
+  const feedback = userId && id ? await getFeedbackByInterviewId({interviewId: id, userId}) : null;
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("DD/MM/YYYY");
 
   return (
-    <div className="card-border w-[360px] max-sm:w-full min-h-96">
-      <div className="card-interview">
+    <div className="w-full h-full bg-white/70 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <div className="p-6 flex flex-col justify-between h-full">
         <div>
-          <div className="absolute top-0 right-0 px-4 py-2 w-fit rounded-bl-lg bg-light-600">
-            <p className="badge-text">{normalizedType}</p>
+          {/* Type Badge */}
+          <div className="absolute top-0 right-0 px-3 py-1.5 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-bl-xl">
+            <p className="text-xs font-medium text-indigo-600">{normalizedType}</p>
           </div>
-          <h3 className="mt-5 capitalize">{role} Interview</h3>
 
-          <div className="flex flex-row gap-5 mt-3">
-            <div className="flex flex-row gap-2">
+          {/* Card Content */}
+          <h3 className="text-xl font-medium text-gray-800 mt-2 capitalize">
+            {role} Interview
+          </h3>
+
+          {/* Metadata */}
+          <div className="flex items-center gap-5 mt-4 text-gray-600">
+            <div className="flex items-center gap-2">
               <Image
                 src="/calendar.svg"
-                alt="calendar logo"
-                width={22}
-                height={22}
+                alt="calendar"
+                width={18}
+                height={18}
+                className="opacity-70"
               />
-              <p>{formattedDate}</p>
+              <span className="text-sm">{formattedDate}</span>
             </div>
-            <div className="flex flex-row gap-2">
-              <Image src="/star.svg" alt="star" width={22} height={22} />
-              <p>{feedback?.totalScore || "---"} /100</p>
+            <div className="flex items-center gap-2">
+              <Image 
+                src="/star.svg" 
+                alt="star" 
+                width={18} 
+                height={18}
+                className="opacity-70"
+              />
+              <span className="text-sm">
+                {feedback?.totalScore || "---"}/100
+              </span>
             </div>
           </div>
-          <p className="line-clamp-2 mt-5">
+
+          {/* Feedback Preview */}
+          <p className="mt-4 text-gray-600 line-clamp-2 text-sm">
             {feedback?.finalAssessment || "No feedback yet"}
           </p>
         </div>
-        <div className="flex flex-row justify-between">
-        <div className="flex flex-row">
-            {techstack.map((tech , index) => (
-                <div key={index} className={cn("bg-dark-300 group relative rounded-full p-2 flex-center" , index >=1 && '-ml-3')}>
-                    <span className="tech-tooltip">
-                        {tech}
-                    </span>
-                    <Image src="/tech.svg" alt="tech" width={100} height={100} className="size-5"/>
-                </div>
+
+        {/* Footer */}
+        <div className="flex justify-between items-center mt-6">
+          {/* Tech Stack */}
+          <div className="flex">
+            {techstack.map((tech, index) => (
+              <div 
+                key={index} 
+                className={cn(
+                  "bg-white/80 backdrop-blur-sm group relative rounded-full p-2 flex-center shadow-xs",
+                  index >= 1 && "-ml-3"
+                )}
+              >
+                <span className="group-hover:opacity-100">
+                  {tech}
+                </span>
+              </div>
             ))}
-        </div>
-            <Button className="btn-primary">
-                <Link href={feedback? `/interview/${id}/feedback` : `/interview/${id}` }>
-                {feedback? "Check Feedback" : "View Interview"}
-                </Link>
-            </Button>
+          </div>
+
+          {/* Action Button */}
+          <Button 
+            asChild
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-sm hover:shadow-md transition-all"
+          >
+            <Link href={feedback ? `/interview/${id}/feedback` : `/interview/${id}`}>
+              {feedback ? "View Feedback" : "Continue"}
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
