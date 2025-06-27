@@ -67,12 +67,29 @@ const Agent = ({ userName, userId, type , interviewId , questions }: AgentProps)
   const handleGenerateFeedback= async (messages : SavedMessage[])=>{
     console.log("Generating feedback for messages:", messages);
 
-    const {success, id } = {success: true, id: "feedback-id"};
+    try {
+      const response = await fetch("/api/feedback/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          interviewId: interviewId!,
+          userId: userId!,
+          transcript: messages,
+        }),
+      });
 
-    if(success && id) {
-      router.push(`/interview/${interviewId}/feedback/`);
-    }else{
-      console.error("Failed to generate feedback");
+      const result = await response.json();
+
+      if (result.success && result.feedbackId) {
+        router.push(`/interview/${interviewId}/feedback/`);
+      } else {
+        console.error("Failed to generate feedback:", result.error);
+        router.push(`/`);
+      }
+    } catch (error) {
+      console.error("Error calling feedback API:", error);
       router.push(`/`);
     }
   }

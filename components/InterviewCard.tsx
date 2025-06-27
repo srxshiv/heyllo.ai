@@ -2,9 +2,10 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import DisplayTechIcons from "./DIsplayTechIcons";
+import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import { cn } from "@/lib/utils";
 
-const InterviewCard = ({
+const InterviewCard = async ({
   id,
   userId,
   role,
@@ -13,7 +14,7 @@ const InterviewCard = ({
   createdAt,
 }: InterviewCardProps) => {
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
-  const feedback = null as Feedback | null;
+  const feedback = userId && id ? await getFeedbackByInterviewId({interviewId : id , userId}) : null ;
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("DD/MM/YYYY");
@@ -25,13 +26,6 @@ const InterviewCard = ({
           <div className="absolute top-0 right-0 px-4 py-2 w-fit rounded-bl-lg bg-light-600">
             <p className="badge-text">{normalizedType}</p>
           </div>
-          <Image
-            alt="adobe"
-            width={90}
-            height={90}
-            src="/covers/amazon.png"
-            className="rounded-full object-fit size-[90px]"
-          />
           <h3 className="mt-5 capitalize">{role} Interview</h3>
 
           <div className="flex flex-row gap-5 mt-3">
@@ -54,7 +48,16 @@ const InterviewCard = ({
           </p>
         </div>
         <div className="flex flex-row justify-between">
-            <DisplayTechIcons techStack={techstack}/>
+        <div className="flex flex-row">
+            {techstack.map((tech , index) => (
+                <div key={index} className={cn("bg-dark-300 group relative rounded-full p-2 flex-center" , index >=1 && '-ml-3')}>
+                    <span className="tech-tooltip">
+                        {tech}
+                    </span>
+                    <Image src="/tech.svg" alt="tech" width={100} height={100} className="size-5"/>
+                </div>
+            ))}
+        </div>
             <Button className="btn-primary">
                 <Link href={feedback? `/interview/${id}/feedback` : `/interview/${id}` }>
                 {feedback? "Check Feedback" : "View Interview"}
