@@ -4,6 +4,12 @@ import { generateAIFeedback } from "./ai.action";
 export async function getInterviewByUserId(
   userId: string
 ): Promise<Interview[] | null> {
+
+  console.log(userId)
+  
+  if(!userId){
+    return []
+  }
   const interviews = await db
     .collection("interviews")
     .where("userId", "==", userId)
